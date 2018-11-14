@@ -1,0 +1,10 @@
+src/main/api/schemas-merged
+target
+.class
+.classpath
+.project
+.settings
+.DS_Store
+.idea
+.studio
+catalog
