@@ -8,7 +8,7 @@ public enum VisibleInstructionSetsMapping implements HasName{
 	CREATED_BY_ME(VisibleInstructionSets.MY_CREATED_BY_ME, "CREATED_BY_ME");
 	
 	
-	public static final EnumEnhancer<VisibleInstructionSetsMapping> enhancer =
+	private static final EnumEnhancer<VisibleInstructionSetsMapping> enhancer =
 			new EnumEnhancer<VisibleInstructionSetsMapping>(values());
 	
 	

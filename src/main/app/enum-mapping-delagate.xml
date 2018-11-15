@@ -1,7 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.9.1"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+<spring:beans>
+
+        <context:component-scan base-package="com.marcura.dadeskapi"/>
+
+        <spring:bean id="dozer" class="org.dozer.DozerBeanMapper">
+        	<spring:constructor-arg>
+        		<spring:list>
+        			<spring:value>dozer/global.mapper.xml</spring:value>
+        		</spring:list>
+        	</spring:constructor-arg>
+        </spring:bean>
+
+</spring:beans>
+
+<configuration doc:name="Configuration">
+		<expression-language>
+			<global-functions>
+				def dozerTransformWithContext(input, clazz, mapId){
+					registry = app.registry;
+					return registry.dozerUtils.transform(input, clazz, mapId);
+				}
+			</global-functions>
+		</expression-language>
+</configuration>
+
+
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+
+    <flow name="enum-mapping-delagateFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/ui" allowedMethods="GET" doc:name="HTTP"/>
+        <parse-template location="src/main/resources/testInput/ui.input.json" doc:name="Parse Template"/>
+        <json:json-to-object-transformer returnClass="com.marcura.dadeskapi.classes.Instruction" doc:name="JSON to Object"/>
+        <set-payload value="#[dozerTransformWithContext(payload, java.util.Map, null)]" doc:name="Set Payload"/>
+        <logger level="INFO" doc:name="Logger" message="#[payload]"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
+
+
+
+
+</mule>
