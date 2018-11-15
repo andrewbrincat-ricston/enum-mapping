@@ -35,8 +35,8 @@ public enum VisibleInstructionSetsMapping implements HasName{
 	}	
 	
 	// This is delegation.
-	public String toString() {
-	    return enhancer.toStringValue(this);
+	public static String toStringValue(VisibleInstructionSets enumvalue) {
+	    return (String)enhancer.toStringValue(enumvalue);
 	}
 
 	// This too is delegation.     

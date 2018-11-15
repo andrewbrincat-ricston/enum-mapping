@@ -12,7 +12,9 @@ public class InterfaceTestCase {
 		VisibleInstructionSets enum1 = VisibleInstructionSetsMapping.toEnum("ALL_INSTRUCTIONS");
 		System.out.println(enum1);
 		
-//		Object enum1 = VisibleInstructionSetsMapping.toStringValue(VisibleInstructionSets.MY_ALL_INSTRUCTIONS);
-//		System.out.println(enum1);
+		String stringValue = VisibleInstructionSetsMapping.toStringValue(VisibleInstructionSets.MY_CREATED_BY_ME);
+		System.out.println(stringValue);
+		
+		System.out.println(VisibleInstructionSetsMapping.toEnum(stringValue));
 	}
 }

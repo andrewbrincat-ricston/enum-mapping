@@ -1,31 +1,30 @@
 package com.enums.mappings;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 
 
 @SuppressWarnings("unchecked")
 public class EnumEnhancer<E extends Enum<E> & HasName>{
 
-	private Map<String, E> lookupMap;
-	
+	private BidiMap lookupMap;
 	
 	public EnumEnhancer(E... values) {
-		lookupMap = new HashMap<String, E>();
-		
+		lookupMap = new DualHashBidiMap();		
 		for(final E enumValue : values) {
-			lookupMap.put(enumValue.getName(), (E) enumValue.getEnumObject());
+			//put( EnumValue , String name)
+			lookupMap.put((E) enumValue.getEnumObject(), enumValue.getName());
 		}
 	}
 	
 	//Get key from map
 	public Enum toEnum(String name) {
-		return lookupMap.get(name);
+		return (Enum) lookupMap.getKey(name);
 	}
 	
 	//Get value from map
-	public String toStringValue(E enumValue) {
-		return enumValue.getName();
+	public String toStringValue(Enum<?> enumvalue) {
+		return (String) lookupMap.get(enumvalue);
 	}
 
 
