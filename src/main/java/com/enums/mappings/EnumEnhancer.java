@@ -18,8 +18,8 @@ public class EnumEnhancer<E extends Enum<E> & HasName>{
 	}
 	
 	//Get key from map
-	public Enum toEnum(String name) {
-		return (Enum) lookupMap.getKey(name);
+	public Enum<?> toEnum(String name) {
+		return (Enum<?>) lookupMap.getKey(name);
 	}
 	
 	//Get value from map

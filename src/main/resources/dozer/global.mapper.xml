@@ -10,7 +10,7 @@
 				<a>name</a>
 				<b>fullname</b>
 			</field>
-			<field>
+			<field custom-converter="com.marcura.dadeskapi.dozer.converter.EnumToStringConverter" custom-converter-param="com.enums.mappings.VisibleInstructionSetsMapping">
 				<a>visible</a>
 				<b>status</b>
 			</field>

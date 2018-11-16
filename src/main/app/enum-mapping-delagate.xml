@@ -46,6 +46,14 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
         <logger level="INFO" doc:name="Logger" message="#[payload]"/>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
     </flow>
+    <flow name="enum-mapping-delagateFlow1">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/dadesk" allowedMethods="GET" doc:name="HTTP"/>
+        <parse-template location="src/main/resources/testInput/dadesk.input.json" doc:name="Parse Template"/>
+        <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
+        <set-payload value="#[dozerTransformWithContext(payload, com.marcura.dadeskapi.classes.Instruction, null)]" doc:name="Set Payload"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
 
 
 
